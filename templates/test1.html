@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>test</title>
+    <style></style>
+</head>
+<body>
+<div class="container">
+    hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+</div>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $.ajax('http://www.arrowarcher.top/jssdk_api/', {
+            type: 'GET',
+            success: function (data) {
+                console.log("成功", data);
+                data = JSON.parse(data);
+                console.log(data['appId']);
+                wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: data.appId, // 必填，公众号的唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.noncestr, // 必填，生成签名的随机串
+                    signature: data.signature,// 必填，签名
+                    jsApiList: [
+                        // 'onMenuShareTimeline',
+                        // 'onMenuShareAppMessage',
+                        'updateTimelineShareData',  //朋友圈
+                        'updateAppMessageShareData' //好友
+                    ] // 必填，需要使用的JS接口列表
+                });
+
+                wx.ready(function () {
+                    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                    // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容
+                    wx.updateAppMessageShareData({
+                        title: '分享标题', // 分享标题
+                        desc: '分享描述', // 分享描述
+                        link: 'http://www.arrowarcher.top/test_html/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'http://www.arrowarcher.top/static/test.jpg', // 分享图标
+                        success: function () {
+                            // 设置成功
+                        }
+                    });
+                    // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
+                    wx.updateTimelineShareData({
+                        title: '分享标题', // 分享标题
+                        link: 'http://www.arrowarcher.top/test_html/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: '', // 分享图标
+                        success: function () {
+                            // 设置成功
+                        }
+                    })
+                });
+                wx.error(function (res) {
+                    alert('wx错误：',res);
+                    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                });
+            },
+            error: function (err) {
+                console.log("错误??", err)
+            },
+        });
+    });
+
+</script>
+</html>
+
