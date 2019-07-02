@@ -122,5 +122,5 @@ STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static'),
     )
 
-appid = 'wx415f15744cfa8d25'
-secret = '4e8cfa39fe03d15c7e241e37f5a38e96'
+appid = ''
+secret = ''
